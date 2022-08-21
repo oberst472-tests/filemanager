@@ -40,10 +40,11 @@ const classes = computed(() => {
   display: inline-flex;
   align-items: center;
   line-height: 1;
-  transition-duration: 0.3s;
+  //transition-duration: 0.3s;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--f-active-color);
+    color: #ffffff;
   }
 
   &:before {
@@ -61,11 +62,22 @@ const classes = computed(() => {
       &:before {
         background-image: url('./images/root-folder.svg');
       }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        color: var(--f-text-color)
+      }
     }
 
     &-folder {
       &:before {
-        background-image: url('./images/folder.svg');
+        background-image: url('./images/folder.png');
+      }
+    }
+
+    &-img {
+      &:before {
+        background-image: url('./images/img.png');
       }
     }
   }
