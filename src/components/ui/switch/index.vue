@@ -20,12 +20,19 @@ export default {
 </script>
 
 <script setup lang="ts">
+interface Props {
+  theme?: string
+}
+
 import { computed, ref } from 'vue';
+const props = defineProps<Props>()
+
 
 const isActive = ref(false)
 const classes = computed(() => {
   return {
-    'ui-switch--active': isActive.value
+    'ui-switch--active': isActive.value,
+    [`ui-switch--theme-${props.theme || 'default'}`]: true
   }
 })
 
@@ -72,6 +79,13 @@ const changeSwitch = function () {
   &--active {
     .ui-switch__circle {
       left: calc(50% - 2px);
+    }
+  }
+  &--theme {
+    &-blue {
+      .ui-switch__switch {
+        background-color: var(--f-active-color);
+      }
     }
   }
 }

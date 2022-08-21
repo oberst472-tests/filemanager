@@ -1,6 +1,7 @@
 <template>
   <component
       :is="tag"
+      :class="classes"
       class="ui-item"
   >
     <slot/>
@@ -19,32 +20,54 @@ import { computed } from 'vue';
 
 interface Props {
   tag?: string
-  bar?: number
+  type: string
 }
 
 const props = defineProps<Props>()
 const tag = computed(() => props.tag || 'div')
+
+const classes = computed(() => {
+  return {
+    [`ui-item--type-${props.type}`]: true
+  }
+})
 </script>
 
 <style lang="scss">
 .ui-item {
-  background-color: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   line-height: 1;
+  transition-duration: 0.3s;
 
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
 
   &:before {
     content: '';
     width: 14px;
     height: 12px;
     margin-right: 5px;
-    background-image: url('./images/root-folder.svg');
     background-size: contain;
     background-repeat: no-repeat;
     flex-shrink: 0;
+  }
+
+  &--type {
+    &-root-folder {
+      &:before {
+        background-image: url('./images/root-folder.svg');
+      }
+    }
+
+    &-folder {
+      &:before {
+        background-image: url('./images/folder.svg');
+      }
+    }
   }
 }
 </style>

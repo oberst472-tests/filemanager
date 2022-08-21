@@ -1,17 +1,21 @@
 <template>
   <div class="block-aside">
     <ul class="block-aside__folders">
-      <UiItem class="block-aside__folders-item" tag="li" root-folder>Browse files</UiItem>
-      <UiItem class="block-aside__folders-item" tag="li" root-folder>Configure tags</UiItem>
-      <UiItem class="block-aside__folders-item" tag="li" root-folder>Configure users</UiItem>
-      <UiItem class="block-aside__folders-item" tag="li" root-folder>Logout</UiItem>
+      <UiItem
+          class="block-aside__folders-item"
+          tag="li"
+          type="root-folder"
+          v-for="item in items"
+      >
+        {{ item }}
+      </UiItem>
     </ul>
 
     <BlockTags class="block-aside__tags">Tags</BlockTags>
 
     <div class="block-aside__switch-box">
       <UiSwitch class="block-aside__switch">Dark Theme</UiSwitch>
-      <UiSwitch class="block-aside__switch">Auto-switch theme</UiSwitch>
+      <UiSwitch class="block-aside__switch" theme="blue">Auto-switch theme</UiSwitch>
     </div>
 
   </div>
@@ -28,6 +32,9 @@ export default {
 import UiItem from '@/components/ui/item/index.vue'
 import UiSwitch from '@/components/ui/switch/index.vue'
 import BlockTags from '@/components/blocks/tags/index.vue'
+import { ref } from 'vue';
+
+const items = ref(['Browse files', 'Configure tags', 'Configure users', 'Logout'])
 </script>
 
 <style lang="scss">
