@@ -1,5 +1,5 @@
 <template>
-  <section class="section-file-manager">
+  <section class="section-file-manager section-file-manager--theme-light">
     <BlockAside class="section-file-manager__aside"/>
     <BlockHeader class="section-file-manager__header"/>
     <BlockContent class="section-file-manager__content"/>
@@ -35,6 +35,7 @@ import BlockContent from '@/components/blocks/content/index.vue'
   font-family: $main-font;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   border-radius: 14px;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 200px 1fr;
   grid-template-rows: 50px 1fr;
@@ -56,6 +57,16 @@ import BlockContent from '@/components/blocks/content/index.vue'
 
   * {
     box-sizing: border-box;
+  }
+  &--theme-dark {
+    .block-aside {
+      background-color: var(--f-aside-color-dark-theme);
+    }
+  }
+  &--theme-light {
+    .block-aside {
+      background-color: var(--f-aside-color);
+    }
   }
 }
 </style>

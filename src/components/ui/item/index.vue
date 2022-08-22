@@ -50,7 +50,7 @@ const classes = computed(() => {
   &:before {
     content: '';
     width: 14px;
-    height: 12px;
+    height: 10px;
     margin-right: 5px;
     background-size: contain;
     background-repeat: no-repeat;
@@ -71,13 +71,13 @@ const classes = computed(() => {
 
     &-folder {
       &:before {
-        background-image: url('./images/folder.png');
+        background-image: url('./images/folder.svg');
       }
     }
 
     &-img {
       &:before {
-        background-image: url('./images/img.png');
+        background-image: url('./images/img.svg');
       }
     }
   }

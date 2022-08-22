@@ -39,7 +39,6 @@ const items = ref(['Browse files', 'Configure tags', 'Configure users', 'Logout'
 
 <style lang="scss">
 .block-aside {
-  background-color: var(--f-aside-color);
   padding: 25px 10px 15px 26px;
   display: flex;
   flex-direction: column;

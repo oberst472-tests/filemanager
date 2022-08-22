@@ -1,6 +1,7 @@
 <template>
   <div class="block-content">
-    <BlockContentItem class="block-content__el"></BlockContentItem>
+    <BlockContentItem class="block-content__el"/>
+    <BlockContentItem class="block-content__el"/>
     <BlockContentPreview class="block-content__preview"></BlockContentPreview>
   </div>
 </template>
@@ -26,7 +27,7 @@ import BlockContentPreview from '@/components/blocks/preview/index.vue'
 
   &__el {
     flex-shrink: 0;
-    min-width: 200px;
+    width: 200px;
     flex-grow: 1;
     border-right: 1px solid var(--f-border-color);
     overflow-y: auto;

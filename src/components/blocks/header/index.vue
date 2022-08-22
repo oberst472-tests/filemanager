@@ -26,7 +26,7 @@ import UiItem from '@/components/ui/item/index.vue'
 <style scoped lang="scss">
 .block-header {
   margin: 0;
-  padding: 5px 30px;
+  padding: 5px 24px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--f-border-color);
@@ -37,6 +37,7 @@ import UiItem from '@/components/ui/item/index.vue'
   &__item {
     line-height: 0.9;
     font-size: 11px;
+    padding: 4px 6px;
 
     &:not(:last-of-type) {
       &:after {
