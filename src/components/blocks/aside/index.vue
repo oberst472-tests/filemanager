@@ -11,7 +11,7 @@
       </UiItem>
     </ul>
 
-    <BlockTags class="block-aside__tags">Tags</BlockTags>
+    <BlockTags class="block-aside__tags" :items="props.items">Tags</BlockTags>
 
     <div class="block-aside__switch-box">
       <UiSwitch class="block-aside__switch">Dark Theme</UiSwitch>
@@ -32,7 +32,14 @@ export default {
 import UiItem from '@/components/ui/item/index.vue'
 import UiSwitch from '@/components/ui/switch/index.vue'
 import BlockTags from '@/components/blocks/tags/index.vue'
-import { ref } from 'vue';
+import { defineProps, ref } from 'vue';
+
+const props = defineProps({
+  items: {
+    type: Array,
+    default: () => []
+  }
+})
 
 const items = ref(['Browse files', 'Configure tags', 'Configure users', 'Logout'])
 </script>

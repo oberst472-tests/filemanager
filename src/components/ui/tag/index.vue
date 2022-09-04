@@ -4,6 +4,7 @@
       :class="classes"
       class="ui-tag"
   >
+    <span class="ui-tag__circle" :style="{'backgroundColor': props.color}"></span>
     <slot/>
   </component>
 </template>
@@ -39,30 +40,19 @@ const classes = computed(() => {
   display: inline-flex;
   align-items: center;
   line-height: 1;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--f-text-color)
+  }
 
 
-  &:before {
+  &__circle {
     content: '';
     width: 8px;
     height: 8px;
     margin-right: 5px;
     border-radius: 50%;
     background-color: #f5baff;
-  }
-  &--color-orange {
-    &:before {
-      background-color: #f8a34d;
-    }
-  }
-  &--color-blue {
-    &:before {
-      background-color: #488ef7;
-    }
-  }
-  &--color-green {
-    &:before {
-      background-color: #5fcf65;
-    }
   }
 }
 </style>

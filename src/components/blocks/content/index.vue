@@ -1,8 +1,15 @@
 <template>
   <div class="block-content">
-    <BlockContentItem class="block-content__el"/>
-    <BlockContentItem class="block-content__el"/>
-    <BlockContentPreview class="block-content__preview"></BlockContentPreview>
+    <BlockContentItem
+        v-for="(item, index) in props.items"
+        class="block-content__el"
+        :info="item"
+        :index="index"
+        @addFolder="addFolder"
+        @openFolder="openFolder"
+        @addTag="addTag"
+    />
+    <BlockContentPreview class="block-content__preview"/>
   </div>
 </template>
 
@@ -14,9 +21,44 @@ export default {
 </script>
 
 <script setup lang="ts">
-
 import BlockContentItem from '@/components/blocks/content-item/index.vue'
 import BlockContentPreview from '@/components/blocks/preview/index.vue'
+import { useFoldersStore } from '../../../stores/folders';
+import { useMainStore } from '../../../stores/main';
+import { useTagsStore } from '../../../stores/tags';
+const tagsStore = useTagsStore()
+const foldersStore = useFoldersStore()
+const mainStore = useMainStore()
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  items: {
+    type: Array,
+    default: () => []
+  }
+})
+const addFolder = async function ({parentId, name}: { parentId: number, name: string }) {
+  try {
+    await foldersStore.stAddNewFolder({parentId, name})
+  } finally {
+    mainStore.changeLoading(false)
+  }
+}
+const addTag = async function ({tags, type, folderId}: any) {
+  try {
+    await tagsStore.stAddTag({tags, type, folderId})
+  } finally {
+    mainStore.changeLoading(false)
+  }
+}
+const openFolder = async function ({id, name, index}: {id: string | number, name: string, index: number}) {
+  mainStore.changeLoading()
+  try {
+    await foldersStore.stGetFolderById({id, name, index})
+  } finally {
+    mainStore.changeLoading(false)
+  }
+}
 </script>
 
 <style lang="scss">

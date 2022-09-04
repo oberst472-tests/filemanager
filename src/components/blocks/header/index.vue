@@ -4,9 +4,10 @@
         class="block-header__item"
         tag="li"
         type="folder"
-        v-for="item in 4"
+        :key="item.id"
+        v-for="item in props.items"
     >
-      First Folder
+      {{ item.name }}
     </UiItem>
   </ul>
 </template>
@@ -20,6 +21,12 @@ export default {
 
 <script setup lang="ts">
 import UiItem from '@/components/ui/item/index.vue'
+const props = defineProps({
+  items: {
+    type: Array,
+    default: () => []
+  }
+})
 
 </script>
 

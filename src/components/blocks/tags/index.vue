@@ -3,9 +3,15 @@
       <div class="block-tags__title"><slot/></div>
 
       <ul class="block-tags__items">
-        <UiTag class="block-tags__item" tag="li" color="orange">Orange-tag</UiTag>
-        <UiTag class="block-tags__item" tag="li" color="blue">Blue-tag</UiTag>
-        <UiTag class="block-tags__item" tag="li" color="green">Green-tag</UiTag>
+        <UiTag
+            class="block-tags__item"
+            tag="li"
+            :color="item.color"
+            v-for="item in props.items"
+            :key="item.id"
+        >
+          {{ item.name }}
+        </UiTag>
       </ul>
     </div>
 </template>
@@ -19,7 +25,13 @@ export default {
 
 <script setup lang="ts">
 import UiTag from '@/components/ui/tag/index.vue'
-
+import { defineProps } from 'vue';
+const props = defineProps({
+  items: {
+    type: Array,
+    default: () => []
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -38,7 +50,7 @@ import UiTag from '@/components/ui/tag/index.vue'
   }
   &__item {
     width: 100%;
-    padding: 8px 10px 8px 0;
+    padding: 8px 10px;
     font-size: 13px;
   }
 }

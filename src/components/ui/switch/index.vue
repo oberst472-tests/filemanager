@@ -20,11 +20,11 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 interface Props {
   theme?: string
 }
 
-import { computed, ref } from 'vue';
 const props = defineProps<Props>()
 
 

@@ -1,8 +1,20 @@
 <template>
   <section class="section-file-manager section-file-manager--theme-light">
-    <BlockAside class="section-file-manager__aside"/>
-    <BlockHeader class="section-file-manager__header"/>
-    <BlockContent class="section-file-manager__content"/>
+    <UiLoading v-if="mainStore.isLoading" class="section-file-manager__loading"></UiLoading>
+    <BlockAside
+        class="section-file-manager__aside"
+        :items="tagsStore.tags"
+    />
+
+    <BlockHeader
+        class="section-file-manager__header"
+        :items="foldersStore.breadcrumbs"
+    />
+
+    <BlockContent
+        class="section-file-manager__content"
+        :items="foldersStore.items"
+    />
   </section>
 </template>
 
@@ -18,6 +30,23 @@ export default {
 import BlockAside from '@/components/blocks/aside/index.vue'
 import BlockHeader from '@/components/blocks/header/index.vue'
 import BlockContent from '@/components/blocks/content/index.vue'
+import UiLoading from '@/components/ui/loading/index.vue'
+import { onMounted } from 'vue';
+import { useFoldersStore } from '../../../stores/folders';
+import { useMainStore } from '../../../stores/main';
+import { useTagsStore } from '../../../stores/tags';
+const foldersStore = useFoldersStore()
+const tagsStore = useTagsStore()
+const mainStore = useMainStore()
+onMounted(async () => {
+  mainStore.changeLoading()
+  document.cookie = "REMEMBERME=QXBwXEVudGl0eVxVc2VyOmRHVnpkQzF0WVdsc01FQjBaWE4wTG1OdmJRPT06MTY2MjMyMzk0OTppVGFaUy9xTDdJTkVUK0RJZTNQWnRISWw2YkNVVkpmcE5BaER5WWVuang2czhGL3ZxbWdsYTYzbFpRRUthbzFRdzBKUEhFeWlDblQwQ0p5cXc4amEwQT09OmVmM2I4NDA4ZTQ2OGZiZjk5OThlNTI5NTkwZGYwNDZiN2JlMzBmZmUzZjcxZjMxNjVlOTUwYWIwMmJiZDI3M2Q%3D"
+  const folders = await foldersStore.stGetFolders()
+  const tags = await tagsStore.stGetTags()
+  const res = await Promise.all([folders, tags])
+  console.log(res);
+  mainStore.changeLoading(false)
+})
 </script>
 
 <style lang="scss">
@@ -31,6 +60,7 @@ import BlockContent from '@/components/blocks/content/index.vue'
 }
 
 .section-file-manager {
+  position: relative;
   color: var(--f-text-color);
   font-family: $main-font;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -42,6 +72,10 @@ import BlockContent from '@/components/blocks/content/index.vue'
   grid-template-areas:
       'aside header'
       'aside content';
+
+  &__loading {
+    z-index: 100;
+  }
 
   &__aside {
     grid-area: aside;

@@ -4,14 +4,42 @@
       <BlockUpload class="block-content-item__upload"/>
 
       <div class="block-content-item__btns">
-        <button class="block-content-item__btns-btn">Add folder</button>
-        <button class="block-content-item__btns-btn">Add image</button>
-        <button class="block-content-item__btns-btn block-content-item__btns-btn-delete">Delete</button>
+        <div class="block-content-item__btns-box">
+          <button
+              class="block-content-item__btns-btn"
+              @click="state.isCreateFolderActive = true"
+          >+
+           Add folder
+          </button>
+          <Transition name="leave">
+            <BlockAddForm
+                @send="addFolder"
+                @close="state.isCreateFolderActive = false"
+                id="addFolder"
+                v-if="state.isCreateFolderActive"
+            />
+          </Transition>
+        </div>
+
+        <div class="block-content-item__btns-box">
+          <button class="block-content-item__btns-btn">Add image</button>
+        </div>
+        <div class="block-content-item__btns-box">
+          <button class="block-content-item__btns-btn block-content-item__btns-btn-delete">Delete</button>
+        </div>
       </div>
 
-      <div class="block-content-item__items">
-        <UiItem class="block-content-item__el" v-for="item in 29" type="folder">Folder {{ item }}</UiItem>
+      <div class="block-content-item__items" v-if="info.children.length">
+        <BlockItem class="block-content-item__el"
+                   @openFolder="openFolder({id: item.id, name: item.name})"
+                   @chooseTag="addTag"
+                   v-for="item in info.children"
+                   :info="item"
+        >
+          {{ item.name }} / {{ item.id }}
+        </BlockItem>
       </div>
+      <div v-else class="block-content-item__placeholder">No any files</div>
     </div>
   </div>
 </template>
@@ -24,9 +52,41 @@ export default {
 </script>
 
 <script setup lang="ts">
-import UiItem from '@/components/ui/item/index.vue'
+import BlockItem from '@/components/blocks/item/index.vue'
 import BlockUpload from '@/components/blocks/upload/index.vue'
+import BlockAddForm from '@/components/blocks/add-form/index.vue'
+import { defineProps, reactive, ref } from 'vue';
 
+const props = defineProps({
+  info: {
+    type: Object,
+    default: () => {
+      return {}
+    }
+  },
+  index: {
+    type: Number,
+    default: 0
+  }
+})
+
+const activeItem = ref(0)
+const state = reactive({
+  isCreateFolderActive: false
+})
+const emits = defineEmits(['addFolder', 'openFolder', 'addTag'])
+const addFolder = function (name: string) {
+  emits('addFolder', {parentId: props.info.parentId, name})
+}
+
+const addTag = function ({tags, type, folderId}: any) {
+  emits('addTag', {tags, type, folderId})
+}
+const openFolder = function ({id, name}: { id: number, name: string }) {
+  console.log(55);
+  activeItem.value = Number(id)
+  emits('openFolder', {id, name, index: props.index})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -37,6 +97,15 @@ import BlockUpload from '@/components/blocks/upload/index.vue'
   &__content {
     width: 100%;
     padding: 15px 10px;
+    position: relative;
+  }
+
+  &__placeholder {
+    font-size: 12px;
+    font-style: italic;
+    text-align: center;
+    margin-top: 30px;
+    opacity: 0.6;
   }
 
   &__upload {
@@ -44,11 +113,12 @@ import BlockUpload from '@/components/blocks/upload/index.vue'
   }
 
   &__btns {
-    margin-top: 20px;
+    margin-top: 55px;
     display: flex;
     gap: 10px;
     justify-content: space-between;
     padding: 0;
+    position: relative;
 
     &-btn {
       flex-shrink: 0;
@@ -56,9 +126,19 @@ import BlockUpload from '@/components/blocks/upload/index.vue'
       background-color: transparent;
       padding: 0;
       border: none;
-      text-decoration: underline;
       color: var(--f-active-color);
       cursor: pointer;
+
+      &:focus {
+        opacity: 0.7;
+
+        & + .block-content-item__btns-form {
+          opacity: 1;
+          pointer-events: auto;
+          top: calc(100% + 6px);
+
+        }
+      }
 
       &:hover {
         opacity: 0.7;
@@ -68,6 +148,10 @@ import BlockUpload from '@/components/blocks/upload/index.vue'
         color: #FF0000;
         margin-left: auto;
       }
+    }
+
+    &-box {
+      position: relative;
     }
   }
 
@@ -79,9 +163,6 @@ import BlockUpload from '@/components/blocks/upload/index.vue'
   }
 
   &__el {
-    padding: 5px 10px;
-    font-size: 14px;
-
     &:last-of-type {
       margin-bottom: 15px;
     }
