@@ -44,8 +44,8 @@ const closeHover = function () {
 
 const testSendFiles = async function (files: any[]) {
   const formData = new FormData();
+  // @todo change foder
   const folder = '4024';
-  console.log(files);
   // js array foreach
   for (const file of files) {
     formData.append('file[]', file);
@@ -53,7 +53,7 @@ const testSendFiles = async function (files: any[]) {
   }
   console.log(formData);
 
-  const url = 'http://127.0.0.1:8000/api/image/upload?XDEBUG_SESSION_START=10878'
+  const url = 'https://demo-fklvc3a-d3spspfn365bc.eu-5.platformsh.site/api/image/upload'
   const send = await fetch(url, {
     method: 'POST',
     body: formData
