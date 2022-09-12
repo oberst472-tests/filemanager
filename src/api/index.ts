@@ -1,4 +1,5 @@
 const url = 'https://demo-fklvc3a-d3spspfn365bc.eu-5.platformsh.site/api'
+
 export const apiGetFolders = async function() {
     try {
         return await fetch(`${url}/folders?user=1`)
@@ -42,7 +43,7 @@ export const apiGetTags = async function() {
 }
 
 export const apiAddTag = async function({tags, type, folderId}: any) {
-    const tagsStr = `tags=${tags.join('tags=').split('tags').join('&tags')}`
+    const tagsStr = `tags[]=${tags.join('tags[]=').split('tags').join('&tags')}`
     try {
         return await fetch(`${url}/tag/add?type=${type[0].toUpperCase() + type.substring(1)}&entity_id=${folderId}&${tagsStr}`, {
             method: 'POST',

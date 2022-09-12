@@ -38,7 +38,6 @@ export const useFoldersStore = defineStore('folders', {
                 const res: any = await apiGetFolderById(id)
                 const data: TypeFiles = await res?.json()
                 this.setIndex(index)
-                console.log(this.breadcrumbs);
                 let arr: (TypeFolder | TypeImage)[] = []
                 for (let key in data as TypeFiles) {
                     // @ts-ignore
@@ -63,14 +62,10 @@ export const useFoldersStore = defineStore('folders', {
             }
         },
         async stAddNewFolder({parentId, name}: { parentId: number, name: string }) {
-            console.log(1988);
             try {
                 const res: any = await apiAddNewFolder({parentId, name})
                 const data = await res?.json()
-                console.log(data);
                 const ind: any = this.items.findIndex(item => item.parentId === parentId)
-                console.log(ind);
-                console.log(67);
                 if (!ind) return false
                 this.addNewItemAfterAdding(ind, data)
                 return true

@@ -5,6 +5,8 @@
             @dblclick="emits('openFolder')"
             :type="info.type"
             :isActive="isActive"
+            :tags="info.tags"
+            tag="span"
     >
       <slot/>
     </UiItem>
@@ -13,6 +15,7 @@
           v-if="isActive"
           @close="isActive = false"
           :items="tagsStore.tags"
+          :activeTags="info.tags"
           @chooseTag="chooseTag($event)"
       >
         Select a tag
@@ -36,7 +39,7 @@ import { useTagsStore } from '../../../stores/tags';
 const tagsStore = useTagsStore()
 interface Props {
   tag?: string
-  type: string
+  type?: string
   info: any
 }
 
@@ -54,6 +57,7 @@ const chooseTag = async function ({tags, type}: any) {
   &__item {
     padding: 6px 10px;
     font-size: 13px;
+    width: 100%;
   }
 }
 </style>

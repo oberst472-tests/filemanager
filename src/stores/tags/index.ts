@@ -13,7 +13,6 @@ export const useTagsStore = defineStore('tags', {
                 const res: any = await apiGetTags()
                 const data = await res?.json()
                 this.tags = data
-                console.log(data);
                 return true
             } catch (e) {
                 console.log(e);
@@ -25,10 +24,8 @@ export const useTagsStore = defineStore('tags', {
             try {
                 const res: any = await apiAddTag({tags, type, folderId})
                 const data = await res.json()
-                console.log(data);
                 return true
             } catch (e) {
-                console.log(566);
                 console.log(e);
 
                 return false

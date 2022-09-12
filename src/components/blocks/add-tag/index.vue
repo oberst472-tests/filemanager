@@ -9,7 +9,7 @@
     <div class="block-add-tag__body">
       <span
           class="block-add-tag__tag"
-          :class="{'block-add-tag__tag--active': tagsState[index]}"
+          :class="{'block-add-tag__tag--active': tagsState[index]?.isActive}"
           v-for="(item, index) in props.items"
           :style="{'backgroundColor': item?.color}"
           :key="item.id"
@@ -45,6 +45,10 @@ const props = defineProps({
   items: {
     type: Array,
     default: () => []
+  },
+  activeTags: {
+    type: Array,
+    default: () => []
   }
 })
 const close = function (e) {
@@ -68,7 +72,7 @@ const changeTag = function ({id, index}) {
   }
   console.log(index);
   console.log(tagsState.value[index]);
-  tagsState.value[index] = !tagsState.value[index]
+  tagsState.value[index].isActive = !tagsState.value[index]?.isActive
 }
 const chooseTag = function () {
 emits('chooseTag', {tags: tags.value})
@@ -77,7 +81,17 @@ onMounted(() => {
   setTimeout(() => {
     window.addEventListener('click', close)
   }, 0);
-  tagsState.value = new Array(props.items.length).fill(false)
+  // tagsState.value = new Array(props.items.length).fill(false)
+  tagsState.value = [...props.items]
+  tagsState.value.forEach(item => item.isActive = false)
+  props.activeTags.forEach(item => {
+    const it = tagsState.value.find(it => it.id === item.id)
+    console.log(it);
+    if (it) {
+      it.isActive = true
+    }
+    console.log(it);
+  })
 })
 onUnmounted(() => {
   window.removeEventListener('click', close)

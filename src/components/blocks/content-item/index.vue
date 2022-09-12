@@ -83,7 +83,6 @@ const addTag = function ({tags, type, folderId}: any) {
   emits('addTag', {tags, type, folderId})
 }
 const openFolder = function ({id, name}: { id: number, name: string }) {
-  console.log(55);
   activeItem.value = Number(id)
   emits('openFolder', {id, name, index: props.index})
 }
@@ -109,7 +108,11 @@ const openFolder = function ({id, name}: { id: number, name: string }) {
   }
 
   &__upload {
+    width: calc(100% - 20px);
 
+    &.block-upload--active {
+      width: 100%;
+    }
   }
 
   &__btns {

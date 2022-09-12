@@ -44,7 +44,6 @@ onMounted(async () => {
   const folders = await foldersStore.stGetFolders()
   const tags = await tagsStore.stGetTags()
   const res = await Promise.all([folders, tags])
-  console.log(res);
   mainStore.changeLoading(false)
 })
 </script>
