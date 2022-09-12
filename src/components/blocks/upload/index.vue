@@ -13,7 +13,7 @@
 
     <LBlockPreview :items="state.urls" v-if="state.urls.length"/>
 
-    <input type="file" class="block-upload__inp" @input="handleInput">
+    <input type="file" multiple="multiple" name="files[]" class="block-upload__inp" @input="handleInput">
 
   </label>
 </template>
@@ -44,17 +44,18 @@ const closeHover = function () {
 
 const testSendFiles = async function (files: any[]) {
   const formData = new FormData();
-  formData.append('file[]', files[0], 'image.jpg');
+  const folder = '4024';
+  console.log(files);
+  // js array foreach
+  for (const file of files) {
+    formData.append('file[]', file);
+    formData.append('folder', folder);
+  }
+  console.log(formData);
 
-  console.log(formData.has('file[]'));
-  console.log(formData.get('file[]'));
-
-  const url = 'https://demo-fklvc3a-d3spspfn365bc.eu-5.platformsh.site/api/image/upload'
+  const url = 'http://127.0.0.1:8000/api/image/upload?XDEBUG_SESSION_START=10878'
   const send = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'form/multipart'
-    },
     body: formData
   })
   const data = await send.json()
