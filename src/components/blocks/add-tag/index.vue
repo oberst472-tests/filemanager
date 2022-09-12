@@ -28,30 +28,25 @@
 </template>
 
 
-<script>
+<script lang="ts">
 export default {
   name: 'BlockAddTag'
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { defineEmits, defineProps, onMounted, onUnmounted, ref } from 'vue';
 
-const emits = defineEmits(['chooseTag', 'close'])
+const emits = defineEmits(['chooseTag', 'close', 'send'])
 const val = ref('')
 const tags = ref([])
-const tagsState = ref([])
-const props = defineProps({
-  items: {
-    type: Array,
-    default: () => []
-  },
-  activeTags: {
-    type: Array,
-    default: () => []
-  }
-})
-const close = function (e) {
+const tagsState: any = ref([])
+interface Props {
+  items: any
+  activeTags?: any
+}
+const props = defineProps<Props>()
+const close = function (e: any) {
   const el = e.target
   if (
       !(el.classList.contains('block-add-tag') ||
@@ -63,15 +58,15 @@ const close = function (e) {
   }
 
 }
-const changeTag = function ({id, index}) {
+const changeTag = function ({id, index}: {id: any, index: any}) {
   const ind = tags.value.findIndex(item => item === id)
   if (ind === -1) {
+    //@ts-ignore
     tags.value.push(id)
   } else {
     tags.value.splice(ind, 1)
   }
-  console.log(index);
-  console.log(tagsState.value[index]);
+  //@ts-ignore
   tagsState.value[index].isActive = !tagsState.value[index]?.isActive
 }
 const chooseTag = function () {
@@ -82,12 +77,16 @@ onMounted(() => {
     window.addEventListener('click', close)
   }, 0);
   // tagsState.value = new Array(props.items.length).fill(false)
+  //@ts-ignore
   tagsState.value = [...props.items]
+  //@ts-ignore
   tagsState.value.forEach(item => item.isActive = false)
-  props.activeTags.forEach(item => {
+  props.activeTags.forEach((item: any) => {
+    //@ts-ignore
     const it = tagsState.value.find(it => it.id === item.id)
     console.log(it);
     if (it) {
+      //@ts-ignore
       it.isActive = true
     }
     console.log(it);

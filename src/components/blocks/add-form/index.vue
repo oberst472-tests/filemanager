@@ -1,7 +1,6 @@
 <template>
   <form
       class="block-form"
-      :id="props.id"
       tabindex="1"
       @submit.prevent="emits('send', val)"
   >
@@ -36,6 +35,7 @@ const val = ref('')
 const props = defineProps({
 })
 const close = function (e: Event) {
+  //@ts-ignore
   if (!(e.target.parentNode.classList.contains('block-form') || e.target.classList.contains('block-form'))) {
     emits('close')
   }

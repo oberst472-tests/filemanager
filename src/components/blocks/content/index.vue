@@ -26,10 +26,10 @@ import BlockContentPreview from '@/components/blocks/preview/index.vue'
 import { useFoldersStore } from '../../../stores/folders';
 import { useMainStore } from '../../../stores/main';
 import { useTagsStore } from '../../../stores/tags';
+import { defineProps } from 'vue';
 const tagsStore = useTagsStore()
 const foldersStore = useFoldersStore()
 const mainStore = useMainStore()
-import { defineProps } from 'vue';
 
 const props = defineProps({
   items: {

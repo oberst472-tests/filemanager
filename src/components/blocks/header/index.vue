@@ -21,12 +21,11 @@ export default {
 
 <script setup lang="ts">
 import UiItem from '@/components/ui/item/index.vue'
-const props = defineProps({
-  items: {
-    type: Array,
-    default: () => []
-  }
-})
+import { defineProps } from 'vue';
+interface Props {
+  items: any
+}
+const props = defineProps<Props>()
 
 </script>
 

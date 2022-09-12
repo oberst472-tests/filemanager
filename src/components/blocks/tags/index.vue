@@ -26,12 +26,10 @@ export default {
 <script setup lang="ts">
 import UiTag from '@/components/ui/tag/index.vue'
 import { defineProps } from 'vue';
-const props = defineProps({
-  items: {
-    type: Array,
-    default: () => []
-  }
-})
+interface Props {
+  items: any
+}
+const props = defineProps<Props>()
 </script>
 
 <style lang="scss" scoped>

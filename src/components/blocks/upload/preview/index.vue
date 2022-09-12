@@ -21,13 +21,11 @@ export default {
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
+interface Props {
+  items: any
+}
+const props = defineProps<Props>()
 
-const props = defineProps({
-  items: {
-    type: Array,
-    default: () => []
-  }
-})
 </script>
 
 <style lang="scss" scoped>

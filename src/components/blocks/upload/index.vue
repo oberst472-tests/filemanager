@@ -69,7 +69,7 @@ const handleDrop = async function (e: any) {
   await testSendFiles(dt.files)
 
 }
-const handleInput = async function (e) {
+const handleInput = async function (e: any) {
   if (!state.isActive) state.isActive = true
 
   showPreview(e.target.files)
