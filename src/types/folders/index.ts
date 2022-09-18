@@ -1,3 +1,4 @@
+import { TagType } from '../tags';
 export type TypeFolder = {
     id: number,
     name: string,
@@ -10,6 +11,12 @@ export type TypeImage = {
     short: {
         name: string
     },
+    type: string
+}
+export type TypeItem = {
+    id: number,
+    name: string,
+    tags: TagType[]
     type: string
 }
 

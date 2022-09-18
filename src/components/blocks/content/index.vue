@@ -1,5 +1,7 @@
 <template>
   <div class="block-content">
+    <button id="click-btn" style="width: 0; height: 0; opacity: 0; position: absolute; top: -300vh"></button>
+
     <BlockContentItem
         v-for="(item, index) in props.items"
         class="block-content__el"
@@ -15,6 +17,7 @@
         class="block-content__preview"
         :img="img"
         :downloadLink="downloadLink"
+        v-if="filesStore.activeFileUrl"
     />
   </div>
 </template>
@@ -52,14 +55,20 @@ const addFolder = async function ({parentId, name}: { parentId: number, name: st
     await foldersStore.stAddNewFolder({parentId, name})
   } finally {
     mainStore.changeLoading(false)
+    const el = document.querySelector('.click-btn')
+    el.click()
   }
 }
 
-const addTag = async function ({tags, type, folderId}: any) {
+const addTag = async function ({tags, type, folderId, parentId}: any) {
   try {
-    await tagsStore.stAddTag({tags, type, folderId})
+    const res = await tagsStore.stAddTag({tags, type, folderId})
+    foldersStore.stUpdateTagsInFolder(folderId, parentId, res.tags)
+    if (!res) return
   } finally {
     mainStore.changeLoading(false)
+    const el = document.querySelector('#click-btn')
+    el.click()
   }
 }
 

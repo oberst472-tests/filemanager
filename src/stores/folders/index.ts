@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { apiGetFolders, apiAddNewFolder, apiGetFolderById } from '../../api';
-import { TypeFiles, TypeFolder, TypeImage, TypeItems } from '../../types/folders';
+import { TypeFiles, TypeFolder, TypeImage, TypeItem, TypeItems } from '../../types/folders';
+import { TagType } from '../../types/tags';
 
 export const useFoldersStore = defineStore('folders', {
     state: () => {
@@ -33,6 +34,7 @@ export const useFoldersStore = defineStore('folders', {
                 return false
             }
         },
+
         async stGetFolderById({id, name, index}: { id: string | number, name: string, index: number }) {
             try {
                 const res: any = await apiGetFolderById(id)
@@ -61,26 +63,35 @@ export const useFoldersStore = defineStore('folders', {
                 return false
             }
         },
+
         async stAddNewFolder({parentId, name}: { parentId: number, name: string }) {
             try {
                 const res: any = await apiAddNewFolder({parentId, name})
                 const data = await res?.json()
                 const ind: any = this.items.findIndex(item => item.parentId === parentId)
-                if (!ind) return false
+                if (ind === -1) return false
                 this.addNewItemAfterAdding(ind, data)
                 return true
             } catch (e) {
                 console.log(e);
-
                 return false
             }
         },
         setIndex(val: number) {
             this.index = val
         },
+
         addNewItemAfterAdding(ind: number, data: TypeFolder) {
             data.type = 'folder'
             this.items[ind].children.push(data)
+        },
+
+        stUpdateTagsInFolder(folderId: number, parentId: number, tags: TagType[]) {
+            const parentFolder = this.items.find(item => item.parentId === parentId)
+            if (!parentFolder) return
+            const folder: any = parentFolder.children.find(item => item.id === folderId)
+            if (!folder) return
+            folder.tags = tags
         }
     },
 })

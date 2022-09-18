@@ -39,11 +39,12 @@
         <BlockItem class="block-content-item__el"
                    @openFolder="onClick({id: item.id, name: item.name, item})"
                    @chooseTag="addTag"
-                   v-for="item in info.children"
+                   v-for="item in items"
                    :info="item"
                    :isElemActive="state.activeItem === item.id"
         >
-          {{ item.name }} / {{ item.id }}
+          {{ item.name }}
+<!--          / {{ item.id }}-->
         </BlockItem>
       </div>
 
@@ -64,22 +65,15 @@ import { FileType } from '../../../types/files';
 import BlockItem from '@/components/blocks/item/index.vue'
 import BlockUpload from '@/components/blocks/upload/index.vue'
 import BlockAddForm from '@/components/blocks/add-form/index.vue'
-import { defineProps, reactive, ref } from 'vue';
+import { computed, defineProps, reactive, ref } from 'vue';
 import { useFilesStore } from '../../../stores/files';
 
 const filesStore = useFilesStore()
-const props = defineProps({
-  info: {
-    type: Object,
-    default: () => {
-      return {}
-    }
-  },
-  index: {
-    type: Number,
-    default: 0
-  }
-})
+interface Props {
+  info: any,
+  index: number
+}
+const props = defineProps<Props>()
 
 const state = reactive({
   isCreateFolderActive: false,
@@ -91,8 +85,9 @@ const addFolder = function (name: string) {
 }
 
 const addTag = function ({tags, type, folderId}: any) {
-  emits('addTag', {tags, type, folderId})
+  emits('addTag', {tags, type, folderId, parentId: props.info.parentId})
 }
+const items = computed(() => props.info.children.filter((item: any) => item.type !== 'tag'))
 const onClick = function ({id, name, item}: { id: number, name: string, item: any }) {
   state.activeItem = Number(id)
 
@@ -169,7 +164,6 @@ const sendFiles = async function (items: FileType[]) {
       border: none;
       color: var(--f-active-color);
       cursor: pointer;
-
       &:focus {
         opacity: 0.7;
 
@@ -177,7 +171,6 @@ const sendFiles = async function (items: FileType[]) {
           opacity: 1;
           pointer-events: auto;
           top: calc(100% + 6px);
-
         }
       }
 

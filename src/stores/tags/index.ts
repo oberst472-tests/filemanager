@@ -5,6 +5,7 @@ export const useTagsStore = defineStore('tags', {
     state: () => {
         return {
             tags: [] as any,
+            isLoading: false
         }
     },
     actions: {
@@ -24,7 +25,7 @@ export const useTagsStore = defineStore('tags', {
             try {
                 const res: any = await apiAddTag({tags, type, folderId})
                 const data = await res.json()
-                return true
+                return data?.name ? data : false
             } catch (e) {
                 console.log(e);
 

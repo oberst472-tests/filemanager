@@ -1,6 +1,7 @@
 <template>
   <div class="block-preview">
     <LBlockImgBox
+        v-if="props.downloadLink"
         class="block-preview__img-box"
         :img="props.img"
         :downloadLink="props.downloadLink"

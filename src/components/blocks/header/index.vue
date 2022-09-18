@@ -44,6 +44,12 @@ const props = defineProps<Props>()
     line-height: 0.9;
     font-size: 11px;
     padding: 4px 6px;
+    ::v-deep(.ui-item__add-tag) {
+      display: none !important;
+    }
+    ::v-deep(.ui-item__text) {
+      min-width: auto !important;
+    }
 
     &:not(:last-of-type) {
       &:after {

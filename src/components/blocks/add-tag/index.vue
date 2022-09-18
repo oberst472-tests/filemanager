@@ -6,6 +6,7 @@
     <div class="block-add-tag__title">
       <slot/>
     </div>
+
     <div class="block-add-tag__body">
       <span
           class="block-add-tag__tag"
@@ -16,6 +17,7 @@
           @click="changeTag({id: item.id, index})"
       ></span>
     </div>
+
     <button
         type="submit"
         class="block-add-tag__btn"
@@ -35,12 +37,15 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, onMounted, onUnmounted, ref } from 'vue';
+import { defineEmits, defineProps, onMounted, onUnmounted, reactive, ref } from 'vue';
 
 const emits = defineEmits(['chooseTag', 'close', 'send'])
 const val = ref('')
 const tags = ref([])
 const tagsState: any = ref([])
+const state = reactive({
+  tags: [] as any[]
+})
 interface Props {
   items: any
   activeTags?: any
@@ -59,37 +64,36 @@ const close = function (e: any) {
 
 }
 const changeTag = function ({id, index}: {id: any, index: any}) {
-  const ind = tags.value.findIndex(item => item === id)
+  const ind = state.tags.findIndex(item => item === id)
   if (ind === -1) {
     //@ts-ignore
-    tags.value.push(id)
+    state.tags.push(id)
   } else {
-    tags.value.splice(ind, 1)
+    state.tags.splice(ind, 1)
   }
   //@ts-ignore
   tagsState.value[index].isActive = !tagsState.value[index]?.isActive
 }
 const chooseTag = function () {
-emits('chooseTag', {tags: tags.value})
+emits('chooseTag', {tags: state.tags})
 }
 onMounted(() => {
   setTimeout(() => {
     window.addEventListener('click', close)
   }, 0);
-  // tagsState.value = new Array(props.items.length).fill(false)
   //@ts-ignore
   tagsState.value = [...props.items]
+  // state.tags = [...props.activeTags]
   //@ts-ignore
   tagsState.value.forEach(item => item.isActive = false)
   props.activeTags.forEach((item: any) => {
     //@ts-ignore
     const it = tagsState.value.find(it => it.id === item.id)
-    console.log(it);
     if (it) {
       //@ts-ignore
       it.isActive = true
     }
-    console.log(it);
+    state.tags.push(item.id)
   })
 })
 onUnmounted(() => {
@@ -107,7 +111,6 @@ onUnmounted(() => {
   top: calc(100% + 6px);
   box-shadow: 4px 4px 20px rgba(84, 84, 84, 0.08);
   border-radius: 6px;
-
   background-color: #F6F6F8;
   border: 1px solid #DFDFDF;
 
@@ -131,7 +134,6 @@ onUnmounted(() => {
     border-left: 1px solid #DFDFDF;
   }
 
-
   &__title {
     font-style: normal;
     font-weight: 500;
@@ -147,8 +149,6 @@ onUnmounted(() => {
     gap: 8px;
     max-width: 190px;
     flex-wrap: wrap;
-
-
   }
 
   &__tag {
@@ -157,7 +157,6 @@ onUnmounted(() => {
     flex-shrink: 0;
     width: 14px;
     height: 14px;
-    //font-size: 0;
     border-radius: 50%;
     transition-property: transform;
     &:active {

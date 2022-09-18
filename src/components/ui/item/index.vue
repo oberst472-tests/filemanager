@@ -16,7 +16,7 @@
       <li
           class="ui-item__tag"
           v-for="item in props.tags"
-          :style="{backgroundColor: item?.color}"
+          :style="{backgroundColor: item.color}"
       >
         tag
       </li>
@@ -68,10 +68,10 @@ const isElemActive = computed(() => props?.isElemActive ? props.isElemActive : f
   display: inline-flex;
   align-items: center;
   line-height: 1;
-  //transition-duration: 0.3s;
+
   &__text {
     pointer-events: none;
-    min-width: 80px;
+    margin-right: 15px;
   }
 
   &:hover {
@@ -131,7 +131,7 @@ const isElemActive = computed(() => props?.isElemActive ? props.isElemActive : f
     width: 10px;
     height: 10px;
     background-repeat: no-repeat;
-    margin-left: 10px;
+    margin-right: auto;
     color: #CBCBCD;
     transition-duration: 0.3s;
     transform: scale(1.1);
@@ -146,6 +146,7 @@ const isElemActive = computed(() => props?.isElemActive ? props.isElemActive : f
       pointer-events: none;
     }
   }
+
   &__tags {
     width: 100%;
     max-width: 30%;
@@ -157,6 +158,7 @@ const isElemActive = computed(() => props?.isElemActive ? props.isElemActive : f
     padding: 0 0 0 20px;
     justify-content: flex-end;
   }
+
   &__tag {
     padding: 0;
     flex-shrink: 0;
