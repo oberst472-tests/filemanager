@@ -55,7 +55,7 @@ const addFolder = async function ({parentId, name}: { parentId: number, name: st
     await foldersStore.stAddNewFolder({parentId, name})
   } finally {
     mainStore.changeLoading(false)
-    const el = document.querySelector('.click-btn')
+    const el: HTMLButtonElement | any = document.querySelector('.click-btn')
     el.click()
   }
 }
@@ -67,7 +67,7 @@ const addTag = async function ({tags, type, folderId, parentId}: any) {
     if (!res) return
   } finally {
     mainStore.changeLoading(false)
-    const el = document.querySelector('#click-btn')
+    const el: HTMLButtonElement | any = document.querySelector('#click-btn')
     el.click()
   }
 }
