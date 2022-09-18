@@ -40,6 +40,7 @@ interface Props {
   tags?: TagType[]
   type: string
   isActive?: boolean
+  isElemActive?: boolean
 }
 
 const props = defineProps<Props>()
@@ -48,13 +49,15 @@ const emits = defineEmits(['addTag', 'dblClick'])
 const classes = computed(() => {
   return {
     [`ui-item--type-${type.value}`]: true,
-    [`ui-item--active`]: isActive.value
+    [`ui-item--active`]: isActive.value,
+    [`ui-item-elem--active`]: isElemActive.value
   }
 })
 
 const tag = computed(() => props?.tag ? props.tag : 'span')
 const type = computed(() => props?.type ? props.type : 'folder')
 const isActive = computed(() => props?.isActive ? props.isActive : false)
+const isElemActive = computed(() => props?.isElemActive ? props.isElemActive : false)
 </script>
 
 <style lang="scss">
@@ -116,6 +119,11 @@ const isActive = computed(() => props?.isActive ? props.isActive : false)
     color: #ffffff;
   }
 
+  &-elem--active {
+    background-color: var(--f-active-color);
+    color: #ffffff;
+  }
+
   &__add-tag {
     border: none;
     background-color: transparent;
@@ -143,11 +151,10 @@ const isActive = computed(() => props?.isActive ? props.isActive : false)
     max-width: 30%;
     overflow: hidden;
     margin-left: auto;
-    padding-left: 20px;
     display: flex;
     gap: 5px;
     list-style: none;
-    padding: 0;
+    padding: 0 0 0 20px;
     justify-content: flex-end;
   }
   &__tag {

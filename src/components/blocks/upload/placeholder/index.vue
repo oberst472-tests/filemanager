@@ -26,7 +26,7 @@ export default {
     font-weight: 600;
     font-size: 16px;
     display: block;
-
+    padding: 0 40px;
     color: #FFFFFF;
   }
 
@@ -34,16 +34,18 @@ export default {
     display: block;
     margin-top: 10px;
     padding: 0;
+    text-align: center;
   }
 
   &__item {
     display: block;
     list-style: none;
-    text-align: center;
     font-size: 12px;
     font-weight: 500;
     position: relative;
     color: white;
+    padding: 0 15px;
+    text-align: left;
 
     & + & {
       margin-top: 5px;

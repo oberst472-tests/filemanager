@@ -1,10 +1,10 @@
 <template>
   <div class="block-img-box">
-    <img class="block-img-box__img" src="https://picsum.photos/700" alt="">
-    <button class="block-img-box__btn">
+    <img class="block-img-box__img" :src="img" alt="img">
+    <a :href="props.downloadLink" class="block-img-box__btn" target="_blank">
       Download
       <IconDownload class="block-img-box__icon"/>
-    </button>
+    </a>
   </div>
 </template>
 
@@ -17,6 +17,11 @@ export default {
 
 <script setup lang="ts">
 import IconDownload from '@/components/icons/download/index.vue'
+interface Props {
+  img: string,
+  downloadLink: string
+}
+const props = defineProps<Props>()
 </script>
 
 <style lang="scss">
@@ -47,9 +52,14 @@ import IconDownload from '@/components/icons/download/index.vue'
     cursor: pointer;
     transition-duration: 0.3s;
     padding: 0;
+    text-decoration: none;
+    color: #ffffff;
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
 
     &:hover {
-      color: #5fcf65;
+      color: var(--f-active-color);
     }
 
     &:active {

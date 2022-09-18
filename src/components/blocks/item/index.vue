@@ -5,11 +5,13 @@
             @dblclick="emits('openFolder')"
             :type="info.type"
             :isActive="isActive"
+            :isElemActive="props.isElemActive"
             :tags="info.tags"
             tag="span"
     >
       <slot/>
     </UiItem>
+
     <Transition name="leave">
       <BlockAddTag
           v-if="isActive"
@@ -40,7 +42,8 @@ const tagsStore = useTagsStore()
 interface Props {
   tag?: string
   type?: string
-  info: any
+  info: any,
+  isElemActive: boolean
 }
 
 const props = defineProps<Props>()

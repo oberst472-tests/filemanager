@@ -1,7 +1,14 @@
 <template>
   <div class="block-preview">
-    <LBlockImgBox class="block-preview__img-box"/>
-    <LBlockInfo class="block-preview__info"/>
+    <LBlockImgBox
+        class="block-preview__img-box"
+        :img="props.img"
+        :downloadLink="props.downloadLink"
+    />
+    <LBlockInfo
+        class="block-preview__info"
+        :downloadLink="props.downloadLink"
+    />
   </div>
 </template>
 
@@ -15,6 +22,11 @@ export default {
 <script setup lang="ts">
 import LBlockImgBox from './img-box/index.vue'
 import LBlockInfo from './info/index.vue'
+interface Props {
+  img: string
+  downloadLink: string
+}
+const props = defineProps<Props>()
 </script>
 
 <style lang="scss">

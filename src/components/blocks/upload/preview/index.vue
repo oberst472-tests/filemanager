@@ -1,13 +1,16 @@
 <template>
   <div class="block-preview">
-    <div class="block-preview__img-box">
+    <div
+        v-for="(item, index) in props.items"
+        :key="item.id"
+        @click.prevent="onClick(item.id)"
+        class="block-preview__img-box"
+    >
       <img
           class="block-preview__img"
-          :src="item"
+          :src="item.preview"
           alt="preview"
-          v-for="item in props.items"
       >
-      <button class="block-preview__delete">x</button>
     </div>
   </div>
 </template>
@@ -21,10 +24,16 @@ export default {
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
+
 interface Props {
   items: any
 }
+
 const props = defineProps<Props>()
+const emits = defineEmits(['delete'])
+const onClick = function (id: string) {
+  emits('delete', id)
+}
 
 </script>
 
@@ -34,35 +43,46 @@ const props = defineProps<Props>()
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 7px;
   position: relative;
+
   &__img-box {
     border-radius: 6px;
-    width: calc(50% - 5px);
+    width: calc(33.333% - 5px);
     max-width: 300px;
     overflow: hidden;
     position: relative;
     display: flex;
+    cursor: default;
+
+    &:hover {
+      &:before {
+        opacity: 1;
+      }
+    }
+
+    &:before {
+      opacity: 0;
+      content: '';
+      position: absolute;
+      cursor: pointer;
+      left: 50%;
+      top: 50%;
+      display: inline-flex;
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      background-image: url('@/assets/images/bin.svg');
+      z-index: 5;
+      background-size: contain;
+      transform: translate(-50%, -50%);
+      transition-duration: 0.3s;
+    }
   }
+
   &__img {
     width: 100%;
     max-width: 100%;
-  }
-  &__delete {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background-color: var(--f-error-color);
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    right: 4px;
-    top: 4px;
-
   }
 }
 </style>

@@ -7,9 +7,15 @@
         :index="index"
         @addFolder="addFolder"
         @openFolder="openFolder"
+        @reOpenFolder="reOpenFolder"
         @addTag="addTag"
     />
-    <BlockContentPreview class="block-content__preview"/>
+
+    <BlockContentPreview
+        class="block-content__preview"
+        :img="img"
+        :downloadLink="downloadLink"
+    />
   </div>
 </template>
 
@@ -26,9 +32,12 @@ import BlockContentPreview from '@/components/blocks/preview/index.vue'
 import { useFoldersStore } from '../../../stores/folders';
 import { useMainStore } from '../../../stores/main';
 import { useTagsStore } from '../../../stores/tags';
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
+import { useFilesStore } from '../../../stores/files';
+
 const tagsStore = useTagsStore()
 const foldersStore = useFoldersStore()
+const filesStore = useFilesStore()
 const mainStore = useMainStore()
 
 const props = defineProps({
@@ -37,6 +46,7 @@ const props = defineProps({
     default: () => []
   }
 })
+
 const addFolder = async function ({parentId, name}: { parentId: number, name: string }) {
   try {
     await foldersStore.stAddNewFolder({parentId, name})
@@ -44,6 +54,7 @@ const addFolder = async function ({parentId, name}: { parentId: number, name: st
     mainStore.changeLoading(false)
   }
 }
+
 const addTag = async function ({tags, type, folderId}: any) {
   try {
     await tagsStore.stAddTag({tags, type, folderId})
@@ -51,7 +62,8 @@ const addTag = async function ({tags, type, folderId}: any) {
     mainStore.changeLoading(false)
   }
 }
-const openFolder = async function ({id, name, index}: {id: string | number, name: string, index: number}) {
+
+const openFolder = async function ({id, name, index}: { id: string | number, name: string, index: number }) {
   mainStore.changeLoading()
   try {
     await foldersStore.stGetFolderById({id, name, index})
@@ -59,6 +71,18 @@ const openFolder = async function ({id, name, index}: {id: string | number, name
     mainStore.changeLoading(false)
   }
 }
+
+const reOpenFolder = async function ({id, name, index}: { id: string | number, name: string, index: number }) {
+  mainStore.changeLoading()
+  try {
+    await foldersStore.stGetFolderById({id, name, index})
+  } finally {
+    mainStore.changeLoading(false)
+  }
+}
+
+const img = computed(() => `https://demo-fklvc3a-d3spspfn365bc.eu-5.platformsh.site/api/link/download/${filesStore.activeFileUrl}`)
+const downloadLink = computed(() => `https://demo-fklvc3a-d3spspfn365bc.eu-5.platformsh.site/api/link/download/${filesStore.activeFileUrl}?download`)
 </script>
 
 <style lang="scss">
@@ -69,7 +93,7 @@ const openFolder = async function ({id, name, index}: {id: string | number, name
 
   &__el {
     flex-shrink: 0;
-    width: 200px;
+    width: 250px;
     flex-grow: 1;
     border-right: 1px solid var(--f-border-color);
     overflow-y: auto;

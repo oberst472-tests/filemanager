@@ -7,7 +7,7 @@
 
     <div class="block-info__item">
       <span class="block-info__subtitle">Short link</span>
-      <a href="#" target="_blank" class="block-info__link">http://lorem-ipsum.com</a>
+      <a :href="props.downloadLink" target="_blank" class="block-info__link">{{ props.downloadLink }}</a>
     </div>
 
     <div class="block-info__item block-info__item--align-start">
@@ -43,6 +43,12 @@ export default {
 import { ref } from 'vue';
 
 const date = ref('')
+
+interface Props {
+  downloadLink: string
+}
+
+const props = defineProps<Props>()
 </script>
 
 <style lang="scss" scoped>
@@ -81,6 +87,9 @@ const date = ref('')
     font-size: 13px;
     text-decoration-line: underline;
     color: var(--f-active-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:hover {
       color: var(--f-success-color)

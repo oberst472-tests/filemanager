@@ -9,11 +9,35 @@
   >
     <LBlockPlaceholder v-if="state.isActive"/>
 
-    <span class="block-upload__content" v-else>Drag files or Browse</span>
+    <span
+        class="block-upload__content"
+        v-else
+    >
+      Drag files or Browse
+    </span>
 
-    <LBlockPreview :items="state.urls" v-if="state.urls.length"/>
+    <LBlockPreview
+        :items="state.files"
+        @delete="deletePreview"
+        v-if="state.files.length"
+    />
 
-    <input type="file" class="block-upload__inp" @input="handleInput">
+    <input
+        type="file"
+        class="block-upload__inp"
+        multiple
+        name="files[]"
+        @input="handleInput"
+    >
+
+    <UiBtn
+        class="block-upload__send-btn"
+        v-if="state.files.length"
+        @click.prevent="downloadFiles"
+        :isLoading="props.isLoading"
+    >
+      Download files
+    </UiBtn>
 
   </label>
 </template>
@@ -26,14 +50,23 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { FileType } from '../../../types/files';
+import { defineProps, reactive, watch } from 'vue';
 import LBlockPlaceholder from './placeholder/index.vue'
 import LBlockPreview from './preview/index.vue'
 
+import UiBtn from '@/components/ui/btn/index.vue'
+
+interface Props {
+  isLoading: boolean
+}
+
+const props = defineProps<Props>()
+const emits = defineEmits(['sendFiles'])
+
 const state = reactive({
   isActive: false,
-  files: [],
-  urls: [] as any[]
+  files: [] as FileType[],
 })
 const changeHover = function (val: boolean) {
   if (!state.isActive) state.isActive = true
@@ -42,46 +75,49 @@ const closeHover = function () {
   state.isActive = false
 }
 
-const testSendFiles = async function (files: any[]) {
-  const formData = new FormData();
-  formData.append('file[]', files[0], 'image.jpg');
-
-  console.log(formData.has('file[]'));
-  console.log(formData.get('file[]'));
-
-  const url = 'https://demo-fklvc3a-d3spspfn365bc.eu-5.platformsh.site/api/image/upload'
-  const send = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'form/multipart'
-    },
-    body: formData
-  })
-  const data = await send.json()
-  console.log(data);
-}
-
 const handleDrop = async function (e: any) {
-  if (!state.isActive) state.isActive = true
   const dt = e.dataTransfer
+  if (!state.isActive) state.isActive = true
+  if (!dt.files.length) return
 
-  showPreview(dt.files)
-  await testSendFiles(dt.files)
-
+  showPreviews(dt.files)
 }
+
 const handleInput = async function (e: any) {
   if (!state.isActive) state.isActive = true
+  if (!e.target.files.length) return
 
-  showPreview(e.target.files)
-  await testSendFiles(e.target.files)
+  showPreviews(e.target.files)
 }
 
-function showPreview(files: any) {
-  if (files.length > 0) {
-    const src = URL.createObjectURL(files[0]);
-    state.urls = [src]
+function showPreviews(items: FileType[]) {
+  const arr = []
+
+  for (let item of items) {
+    item.preview = URL.createObjectURL(item as any)
+    item.id = Math.random().toString(12)
+    arr.push(item)
   }
+  if (state.files.length) state.files = [...state.files, ...arr]
+  else state.files = arr
 }
+
+function deletePreview(id: string) {
+  setTimeout(() => {
+    let index = state.files.findIndex(item => item.id === id)
+    state.files.splice(index, 1)
+  }, 0);
+}
+
+function downloadFiles() {
+  emits('sendFiles', state.files)
+}
+
+watch(() => props.isLoading, () => {
+  if (props.isLoading) return
+  state.isActive = false
+  state.files = []
+})
 
 </script>
 
@@ -120,6 +156,7 @@ function showPreview(files: any) {
     flex-direction: column;
     justify-content: flex-start;
     border: none;
+
     &:active {
       opacity: 1;
     }
@@ -169,6 +206,10 @@ function showPreview(files: any) {
     }
   }
 
+  &--loading {
+    pointer-events: none !important;
+  }
+
 
   &__label {
     z-index: 3;
@@ -184,6 +225,21 @@ function showPreview(files: any) {
   &__inp {
     position: absolute;
     left: -400px;
+  }
+
+  &__send-btn {
+    cursor: pointer;
+    width: calc(100% - 40px);
+    transition-duration: 0.3s;
+    transition-property: background-color;
+
+    &:hover {
+      background-color: rgba(1, 122, 255, 0.78);
+    }
+
+    &:active {
+      opacity: 0.6;
+    }
   }
 }
 </style>
