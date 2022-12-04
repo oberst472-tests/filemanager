@@ -1,7 +1,7 @@
 import { FileType } from '../types/files';
 import folder from '../components/icons/folder/index.vue';
 
-const url = 'https://demo-fklvc3a-d3spspfn365bc.eu-5.platformsh.site/api'
+const url = 'http://folders.tw1.ru/api'
 
 export const apiGetFolders = async function () {
     try {

@@ -19,6 +19,7 @@ export const useFoldersStore = defineStore('folders', {
             try {
                 const res: any = await apiGetFolders()
                 const data = await res?.json()
+                console.log(data);
                 const {folders, images} = data
                 const modFolders = folders.length ? folders.map((item: any) => {
                     return {...item, type: 'folder'}
@@ -30,6 +31,7 @@ export const useFoldersStore = defineStore('folders', {
                 } as TypeItems)
                 return true
             } catch (e) {
+                console.log(12);
                 console.log(e);
                 return false
             }

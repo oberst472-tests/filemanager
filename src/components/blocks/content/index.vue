@@ -90,8 +90,8 @@ const reOpenFolder = async function ({id, name, index}: { id: string | number, n
   }
 }
 
-const img = computed(() => `https://demo-fklvc3a-d3spspfn365bc.eu-5.platformsh.site/api/link/download/${filesStore.activeFileUrl}`)
-const downloadLink = computed(() => `https://demo-fklvc3a-d3spspfn365bc.eu-5.platformsh.site/api/link/download/${filesStore.activeFileUrl}?download`)
+const img = computed(() => `http://folders.tw1.ru/api/link/download/${filesStore.activeFileUrl}`)
+const downloadLink = computed(() => `http://folders.tw1.ru/api/link/download/${filesStore.activeFileUrl}?download`)
 </script>
 
 <style lang="scss">
